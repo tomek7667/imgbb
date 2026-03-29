@@ -28,33 +28,33 @@ type Image struct {
 }
 
 // NewImage creates a new image object; No TTL.
-func NewImage(name, source string) (*Image, error) {
+func NewImage(name, source string) *Image {
 	return NewImageWithTTL(name, 0, source)
 }
 
 // NewImageWithTTL creates a new Image.
-func NewImageWithTTL(name string, ttl uint64, source string) (*Image, error) {
+func NewImageWithTTL(name string, ttl uint64, source string) *Image {
 	return &Image{
 		Name:   name,
 		Size:   len(source),
 		Ttl:    ttl,
 		Source: source,
-	}, nil
+	}
 }
 
 // NewImageFromFile creates a new image object; No TTL.
-func NewImageFromFile(name string, file []byte) (*Image, error) {
+func NewImageFromFile(name string, file []byte) *Image {
 	return NewImageFromFileWithTTL(name, 0, file)
 }
 
 // NewImageFromFileWithTTL creates a new Image from file.
-func NewImageFromFileWithTTL(name string, ttl uint64, file []byte) (*Image, error) {
+func NewImageFromFileWithTTL(name string, ttl uint64, file []byte) *Image {
 	return &Image{
 		Name: name,
 		Size: len(file),
 		Ttl:  ttl,
 		File: file,
-	}, nil
+	}
 }
 
 // Error is an upload error response.
