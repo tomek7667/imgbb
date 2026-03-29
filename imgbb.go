@@ -20,30 +20,40 @@ const (
 
 // Image is a struct with image data to upload.
 type Image struct {
-	name   string
-	size   int
-	ttl    uint64
-	source string
-	file   []byte
+	Name   string
+	Size   int
+	Ttl    uint64
+	Source string
+	File   []byte
 }
 
-// NewImage creates a new Image.
-func NewImage(name string, ttl uint64, source string) (*Image, error) {
+// NewImage creates a new image object; No TTL.
+func NewImage(name, source string) (*Image, error) {
+	return NewImageWithTTL(name, 0, source)
+}
+
+// NewImageWithTTL creates a new Image.
+func NewImageWithTTL(name string, ttl uint64, source string) (*Image, error) {
 	return &Image{
-		name:   name,
-		size:   len(source),
-		ttl:    ttl,
-		source: source,
+		Name:   name,
+		Size:   len(source),
+		Ttl:    ttl,
+		Source: source,
 	}, nil
 }
 
-// NewImageFromFile creates a new Image from file.
-func NewImageFromFile(name string, ttl uint64, file []byte) (*Image, error) {
+// NewImageFromFile creates a new image object; No TTL.
+func NewImageFromFile(name string, file []byte) (*Image, error) {
+	return NewImageFromFileWithTTL(name, 0, file)
+}
+
+// NewImageFromFileWithTTL creates a new Image from file.
+func NewImageFromFileWithTTL(name string, ttl uint64, file []byte) (*Image, error) {
 	return &Image{
-		name: name,
-		size: len(file),
-		ttl:  ttl,
-		file: file,
+		Name: name,
+		Size: len(file),
+		Ttl:  ttl,
+		File: file,
 	}, nil
 }
 
@@ -146,32 +156,32 @@ func (i *Client) prepareRequest(ctx context.Context, img *Image) (*http.Request,
 			return
 		}
 
-		if img.ttl > 0 {
-			err = mpWriter.WriteField("expiration", strconv.FormatUint(img.ttl, 10))
+		if img.Ttl > 0 {
+			err = mpWriter.WriteField("expiration", strconv.FormatUint(img.Ttl, 10))
 			if err != nil {
 				return
 			}
 		}
 
-		if img.file != nil {
-			part, err := mpWriter.CreateFormFile("image", img.name)
+		if img.File != nil {
+			part, err := mpWriter.CreateFormFile("image", img.Name)
 			if err != nil {
 				return
 			}
 
-			if _, err = io.Copy(part, bytes.NewReader(img.file)); err != nil {
+			if _, err = io.Copy(part, bytes.NewReader(img.File)); err != nil {
 				return
 			}
 
 			return
 		}
 
-		err = mpWriter.WriteField("name", img.name)
+		err = mpWriter.WriteField("name", img.Name)
 		if err != nil {
 			return
 		}
 
-		err = mpWriter.WriteField("image", img.source)
+		err = mpWriter.WriteField("image", img.Source)
 		if err != nil {
 			return
 		}
