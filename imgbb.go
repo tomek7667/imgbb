@@ -130,12 +130,12 @@ func NewClient(client *http.Client, key string) *Client {
 func (i *Client) Upload(ctx context.Context, img *Image) (Response, error) {
 	req, err := i.prepareRequest(ctx, img)
 	if err != nil {
-		return Response{}, err
+		return Response{}, fmt.Errorf("failed to prepare the request: %w", err)
 	}
 
 	resp, err := i.client.Do(req)
 	if err != nil {
-		return Response{}, fmt.Errorf("%w", err)
+		return Response{}, fmt.Errorf("failed to do the request: %w", err)
 	}
 	defer resp.Body.Close()
 
