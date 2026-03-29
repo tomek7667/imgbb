@@ -116,8 +116,13 @@ type Client struct {
 	key string
 }
 
-// NewClient create a new ImgBB api client.
-func NewClient(client *http.Client, key string) *Client {
+// NewClient creates imgBB client with http default client
+func NewClient(key string) *Client {
+	return NewClientWithHTTP(http.DefaultClient, key)
+}
+
+// NewClientWithHTTP create a new ImgBB api client.
+func NewClientWithHTTP(client *http.Client, key string) *Client {
 	imgBB := &Client{
 		client: client,
 		key:    key,
