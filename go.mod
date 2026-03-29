@@ -1,3 +1,3 @@
-module github.com/JohnNON/ImgBB
+module github.com/tomek7667/imgbb
 
-go 1.21
+go 1.26.1
