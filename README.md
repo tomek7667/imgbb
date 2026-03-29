@@ -24,7 +24,7 @@ import (
     "os"
     "time"
 
-    imgBB "github.com/JohnNON/ImgBB"
+    imgBB "github.com/tomek7667/imgbb"
 )
 
 const (
