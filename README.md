@@ -4,11 +4,13 @@ ImgBB is an [imgbb.com](https://imgbb.com) api client.
 
 Installation
 
-    go get github.com/JohnNON/ImgBB
+```bash
+go get github.com/tomek7667/imgbb
+```
 
 Example of usage:
 
-```golang
+```go
 package main
 
 import (
@@ -41,16 +43,12 @@ func main() {
         log.Fatal(err)
     }
 
-    img, err := imgBB.NewImageFromFile(hashSum(b), 60, b)
+    img, err := imgBB.NewImageFromFile(hashSum(b), b)
     if err != nil {
         log.Fatal(err)
     }
 
-    httpClient := &http.Client{
-        Timeout: 5 * time.Second,
-    }
-
-    imgBBClient := imgBB.NewClient(httpClient, key)
+    imgBBClient := imgBB.NewClient(key)
 
     resp, err := imgBBClient.Upload(context.Background(), img)
     if err != nil {
